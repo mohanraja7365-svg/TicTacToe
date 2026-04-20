@@ -1,31 +1,67 @@
+import java.util.Random;
+
+/**
+ * TicTacToe
+ * UC2 performs a random toss to decide who plays first and assigns
+ * symbols (X or O) to the human and computer accordingly.
+ */
 public class TicTacToe {
 
-    static char[][] board = new char[3][3];
+    // ── Game State Variables ──────────────────────────────────────────
+    static boolean isHumanTurn;
+    static char humanSymbol;
+    static char computerSymbol;
 
+    /**
+     * Entry point of the program. Executes the toss logic and displays
+     * the result of turn and symbol assignment.
+     */
     public static void main(String[] args) {
-        initializeBoard();
-        printBoard();
+        tossAndAssignSymbols();
+        displayTossResult();
     }
 
-    // Initialize board with '-'
-    static void initializeBoard() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                board[row][col] = '-';
-            }
+    /**
+     * Uses random logic to decide the first player and assigns symbols
+     * based on the toss outcome. This method initializes the game state.
+     */
+    static void tossAndAssignSymbols() {
+
+        // Step 1: Random Number Generation
+        Random random = new Random();
+        int toss = random.nextInt(2);   // generates 0 or 1
+
+        // Step 2: Conditional Logic — decide winner and assign symbols
+        if (toss == 0) {
+            // Human wins the toss → gets X and plays first
+            isHumanTurn   = true;
+            humanSymbol    = 'X';
+            computerSymbol = 'O';
+        } else {
+            // Computer wins the toss → gets X and plays first
+            isHumanTurn   = false;
+            humanSymbol    = 'O';
+            computerSymbol = 'X';
         }
     }
 
-    // Print the board
-    static void printBoard() {
-        System.out.println("-------------");
-        for (int row = 0; row < 3; row++) {
-            System.out.print("| ");
-            for (int col = 0; col < 3; col++) {
-                System.out.print(board[row][col] + " | ");
-            }
-            System.out.println();
-            System.out.println("-------------");
+    /**
+     * Displays the toss result, indicating who plays first and which
+     * symbol is assigned to each player.
+     */
+    static void displayTossResult() {
+
+        System.out.println("=== Toss Result ===");
+
+        // Step 3: Read stored game state and report outcome
+        if (isHumanTurn) {
+            System.out.println("Human wins the toss and plays FIRST.");
+        } else {
+            System.out.println("Computer wins the toss and plays FIRST.");
         }
+
+        System.out.println("Human    symbol : " + humanSymbol);
+        System.out.println("Computer symbol : " + computerSymbol);
+        System.out.println("===================");
     }
 }
