@@ -1,40 +1,44 @@
-import java.util.Scanner;
-
 /**
  * TicTacToe
- * UC3 reads a slot number (1–9) entered by the user. This use case
- * focuses only on input handling without validation.
+ * UC5 validates whether a move is inside the board boundaries
+ * and whether the selected cell is empty.
  */
 public class TicTacToe {
 
+    static char[][] board = {
+        {'-', '-', '-'},
+        {'-', '-', '-'},
+        {'-', '-', '-'}
+    };
+
     /**
-     * Entry point of the program. Reads slot input and prints it back
-     * to verify correct user input handling.
+     * Entry point of the program. Tests the validation logic
+     * using sample row and column values.
      */
     public static void main(String[] args) {
-
-        int slot = getUserSlot();
-        System.out.println("Slot entered: " + slot);
+        System.out.println(isValidMove(1, 1));  // true  → center cell is empty
+        board[1][1] = 'X';
+        System.out.println(isValidMove(1, 1));  // false → cell now occupied
+        System.out.println(isValidMove(3, 3));  // false → out of bounds
     }
 
     /**
-     * Reads an integer slot value from the user.
-     * Input  : Scanner object
-     * Output : Slot number (1–9)
-     * Hint   : Validation will be added in later use cases.
+     * Checks if the given row and column are within bounds
+     * and if the target cell is empty.
+     * Input:  Row, Column
+     * Output: true if valid, false otherwise.
      */
-    static int getUserSlot() {
+    static boolean isValidMove(int row, int col) {
+        // 1. Boundary check — row and col must be within 0–2
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+            return false;
+        }
 
-        // Step 1: User Input Handling — create Scanner to read from console
-        Scanner scanner = new Scanner(System.in);
+        // 2. Empty cell check — cell must still be '-'
+        if (board[row][col] != '-') {
+            return false;
+        }
 
-        // Step 2: Prompt the user clearly
-        System.out.print("Enter a slot number (1-9): ");
-
-        // Step 3: Read integer input and return it to the caller
-        int slot = scanner.nextInt();
-
-        // Step 4: Separation of Concerns — only reading here, no validation
-        return slot;
+        return true;
     }
 }
