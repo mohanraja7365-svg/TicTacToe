@@ -1,63 +1,30 @@
 /**
  * TicTacToe
- * UC9 checks whether a player has won by examining
- * rows, columns, and diagonals.
+ * UC10 checks whether the game has ended in a draw
+ * by ensuring no empty cells remain on the board.
  */
 public class TicTacToe {
 
     static char[][] board = new char[3][3];
 
     /**
-     * Entry point of the program. Tests the win-check logic.
+     * Entry point of the program. Tests draw detection logic.
      */
     public static void main(String[] args) {
-        System.out.println(hasWon('X'));
+        System.out.println(isDraw());
     }
 
     /**
-     * Checks all possible winning patterns for the given symbol.
-     * Input: Player symbol
-     * Output: true if win detected.
+     * Traverses the board to check for any remaining empty cells.
+     * Output: true if draw, false otherwise.
      */
-    static boolean hasWon(char symbol) {
-
-        // --- Check all 3 rows ---
-        // A row wins if every cell in that row matches the symbol
-        for (int row = 0; row < 3; row++) {
-            if (board[row][0] == symbol &&
-                board[row][1] == symbol &&
-                board[row][2] == symbol) {
-                return true; // Winning row found
+    static boolean isDraw() {
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                if (board[r][c] == '-')
+                    return false; // Empty cell found — game not over yet
             }
         }
-
-        // --- Check all 3 columns ---
-        // A column wins if every cell in that column matches the symbol
-        for (int col = 0; col < 3; col++) {
-            if (board[0][col] == symbol &&
-                board[1][col] == symbol &&
-                board[2][col] == symbol) {
-                return true; // Winning column found
-            }
-        }
-
-        // --- Check top-left → bottom-right diagonal ---
-        // Positions: (0,0), (1,1), (2,2)
-        if (board[0][0] == symbol &&
-            board[1][1] == symbol &&
-            board[2][2] == symbol) {
-            return true;
-        }
-
-        // --- Check top-right → bottom-left diagonal ---
-        // Positions: (0,2), (1,1), (2,0)
-        if (board[0][2] == symbol &&
-            board[1][1] == symbol &&
-            board[2][0] == symbol) {
-            return true;
-        }
-
-        // No winning pattern found
-        return false;
+        return true; // No empty cells remain — it's a draw
     }
 }
