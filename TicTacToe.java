@@ -1,82 +1,63 @@
 /**
  * TicTacToe
- * UC8 controls the continuous game loop and alternates
- * turns until the game ends.
+ * UC9 checks whether a player has won by examining
+ * rows, columns, and diagonals.
  */
 public class TicTacToe {
 
-    static boolean isHumanTurn = true;
-    static boolean gameOver = false;
+    static char[][] board = new char[3][3];
 
     /**
-     * Entry point of the program. Demonstrates the structure
-     * of a continuous game loop.
+     * Entry point of the program. Tests the win-check logic.
      */
     public static void main(String[] args) {
+        System.out.println(hasWon('X'));
+    }
 
-        // Continue loop until win or draw is detected
-        while (!gameOver) {
+    /**
+     * Checks all possible winning patterns for the given symbol.
+     * Input: Player symbol
+     * Output: true if win detected.
+     */
+    static boolean hasWon(char symbol) {
 
-            if (isHumanTurn) {
-                // Human player makes their move
-                humanMove();
-            } else {
-                // Computer player makes a random valid move
-                computerMove();
-            }
-
-            // After each move, check for a win
-            if (checkWin()) {
-                printBoard();
-                if (isHumanTurn) {
-                    System.out.println("Congratulations! You win!");
-                } else {
-                    System.out.println("Computer wins! Better luck next time.");
-                }
-                gameOver = true; // Stop the loop — win detected
-
-            // Check for a draw (no winner, board is full)
-            } else if (checkDraw()) {
-                printBoard();
-                System.out.println("It's a draw! Well played.");
-                gameOver = true; // Stop the loop — draw detected
-
-            } else {
-                // No winner yet — switch turns and continue
-                isHumanTurn = !isHumanTurn;
+        // --- Check all 3 rows ---
+        // A row wins if every cell in that row matches the symbol
+        for (int row = 0; row < 3; row++) {
+            if (board[row][0] == symbol &&
+                board[row][1] == symbol &&
+                board[row][2] == symbol) {
+                return true; // Winning row found
             }
         }
-    }
 
-    // -------------------------------------------------------
-    // Stub methods — replace with your actual implementations
-    // from UC5, UC6, and UC7
-    // -------------------------------------------------------
+        // --- Check all 3 columns ---
+        // A column wins if every cell in that column matches the symbol
+        for (int col = 0; col < 3; col++) {
+            if (board[0][col] == symbol &&
+                board[1][col] == symbol &&
+                board[2][col] == symbol) {
+                return true; // Winning column found
+            }
+        }
 
-    /** UC6 — Prompts human for a slot and places their symbol */
-    static void humanMove() {
-        // Your UC6 implementation here
-    }
+        // --- Check top-left → bottom-right diagonal ---
+        // Positions: (0,0), (1,1), (2,2)
+        if (board[0][0] == symbol &&
+            board[1][1] == symbol &&
+            board[2][2] == symbol) {
+            return true;
+        }
 
-    /** UC7 — Generates a random valid slot and places computer symbol */
-    static void computerMove() {
-        // Your UC7 implementation here
-    }
+        // --- Check top-right → bottom-left diagonal ---
+        // Positions: (0,2), (1,1), (2,0)
+        if (board[0][2] == symbol &&
+            board[1][1] == symbol &&
+            board[2][0] == symbol) {
+            return true;
+        }
 
-    /** UC4 — Returns true if the current player has three in a row */
-    static boolean checkWin() {
-        // Your UC4 implementation here
+        // No winning pattern found
         return false;
-    }
-
-    /** UC5 — Returns true if all 9 slots are filled with no winner */
-    static boolean checkDraw() {
-        // Your UC5 implementation here
-        return false;
-    }
-
-    /** Prints the current board state */
-    static void printBoard() {
-        // Your printBoard implementation here
     }
 }
