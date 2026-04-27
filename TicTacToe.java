@@ -1,7 +1,9 @@
+import java.util.Random;
+
 /**
  * TicTacToe
- * UC5 validates whether a move is inside the board boundaries
- * and whether the selected cell is empty.
+ * UC7 allows the computer to make a random valid move
+ * by reusing slot conversion and validation logic.
  */
 public class TicTacToe {
 
@@ -10,35 +12,58 @@ public class TicTacToe {
         {'-', '-', '-'},
         {'-', '-', '-'}
     };
+    static char computerSymbol = 'O';
 
     /**
-     * Entry point of the program. Tests the validation logic
-     * using sample row and column values.
+     * Entry point of the program. Triggers the computer move.
      */
     public static void main(String[] args) {
-        System.out.println(isValidMove(1, 1));  // true  → center cell is empty
-        board[1][1] = 'X';
-        System.out.println(isValidMove(1, 1));  // false → cell now occupied
-        System.out.println(isValidMove(3, 3));  // false → out of bounds
+        computerMove();
     }
 
     /**
-     * Checks if the given row and column are within bounds
-     * and if the target cell is empty.
-     * Input:  Row, Column
-     * Output: true if valid, false otherwise.
+     * Generates random slot values until a valid move is found,
+     * then places the computer symbol on the board.
+     */
+    static void computerMove() {
+        Random random = new Random();
+        int slot;
+        int row, col;
+
+        // Loop until a valid move is found
+        do {
+            // Generate a random slot between 1 and 9
+            slot = random.nextInt(9) + 1;
+
+            // Convert slot to row and column (reuse conversion logic)
+            row = (slot - 1) / 3;
+            col = (slot - 1) % 3;
+
+        } while (!isValidMove(row, col)); // Validate the move
+
+        // Place the computer symbol on the board
+        board[row][col] = computerSymbol;
+
+        System.out.println("Computer placed '" + computerSymbol + "' at slot " + slot);
+        printBoard();
+    }
+
+    /**
+     * Validates whether a move is valid (cell must be empty).
      */
     static boolean isValidMove(int row, int col) {
-        // 1. Boundary check — row and col must be within 0–2
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
-            return false;
-        }
+        return board[row][col] == '-';
+    }
 
-        // 2. Empty cell check — cell must still be '-'
-        if (board[row][col] != '-') {
-            return false;
+    /**
+     * Prints the current state of the board.
+     */
+    static void printBoard() {
+        for (char[] row : board) {
+            for (char cell : row) {
+                System.out.print(cell + " ");
+            }
+            System.out.println();
         }
-
-        return true;
     }
 }
