@@ -1,69 +1,82 @@
-import java.util.Random;
-
 /**
  * TicTacToe
- * UC7 allows the computer to make a random valid move
- * by reusing slot conversion and validation logic.
+ * UC8 controls the continuous game loop and alternates
+ * turns until the game ends.
  */
 public class TicTacToe {
 
-    static char[][] board = {
-        {'-', '-', '-'},
-        {'-', '-', '-'},
-        {'-', '-', '-'}
-    };
-    static char computerSymbol = 'O';
+    static boolean isHumanTurn = true;
+    static boolean gameOver = false;
 
     /**
-     * Entry point of the program. Triggers the computer move.
+     * Entry point of the program. Demonstrates the structure
+     * of a continuous game loop.
      */
     public static void main(String[] args) {
-        computerMove();
-    }
 
-    /**
-     * Generates random slot values until a valid move is found,
-     * then places the computer symbol on the board.
-     */
-    static void computerMove() {
-        Random random = new Random();
-        int slot;
-        int row, col;
+        // Continue loop until win or draw is detected
+        while (!gameOver) {
 
-        // Loop until a valid move is found
-        do {
-            // Generate a random slot between 1 and 9
-            slot = random.nextInt(9) + 1;
-
-            // Convert slot to row and column (reuse conversion logic)
-            row = (slot - 1) / 3;
-            col = (slot - 1) % 3;
-
-        } while (!isValidMove(row, col)); // Validate the move
-
-        // Place the computer symbol on the board
-        board[row][col] = computerSymbol;
-
-        System.out.println("Computer placed '" + computerSymbol + "' at slot " + slot);
-        printBoard();
-    }
-
-    /**
-     * Validates whether a move is valid (cell must be empty).
-     */
-    static boolean isValidMove(int row, int col) {
-        return board[row][col] == '-';
-    }
-
-    /**
-     * Prints the current state of the board.
-     */
-    static void printBoard() {
-        for (char[] row : board) {
-            for (char cell : row) {
-                System.out.print(cell + " ");
+            if (isHumanTurn) {
+                // Human player makes their move
+                humanMove();
+            } else {
+                // Computer player makes a random valid move
+                computerMove();
             }
-            System.out.println();
+
+            // After each move, check for a win
+            if (checkWin()) {
+                printBoard();
+                if (isHumanTurn) {
+                    System.out.println("Congratulations! You win!");
+                } else {
+                    System.out.println("Computer wins! Better luck next time.");
+                }
+                gameOver = true; // Stop the loop — win detected
+
+            // Check for a draw (no winner, board is full)
+            } else if (checkDraw()) {
+                printBoard();
+                System.out.println("It's a draw! Well played.");
+                gameOver = true; // Stop the loop — draw detected
+
+            } else {
+                // No winner yet — switch turns and continue
+                isHumanTurn = !isHumanTurn;
+            }
         }
+    }
+
+    // -------------------------------------------------------
+    // Stub methods — replace with your actual implementations
+    // from UC5, UC6, and UC7
+    // -------------------------------------------------------
+
+    /** UC6 — Prompts human for a slot and places their symbol */
+    static void humanMove() {
+        // Your UC6 implementation here
+    }
+
+    /** UC7 — Generates a random valid slot and places computer symbol */
+    static void computerMove() {
+        // Your UC7 implementation here
+    }
+
+    /** UC4 — Returns true if the current player has three in a row */
+    static boolean checkWin() {
+        // Your UC4 implementation here
+        return false;
+    }
+
+    /** UC5 — Returns true if all 9 slots are filled with no winner */
+    static boolean checkDraw() {
+        // Your UC5 implementation here
+        return false;
+    }
+
+    /** Prints the current board state */
+    static void printBoard() {
+        // Your printBoard implementation here
     }
 }
